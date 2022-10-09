@@ -18,30 +18,33 @@ public class Problem2 {
      */
     public static int[] segregateEvenAndOddNumbers(int[] array) {
         int[] segregatedArray = Arrays.copyOf(array, array.length);
-
-        for (int i = 1; i < segregatedArray.length; i++) {
-            if(segregatedArray[i] % 2 == 0) {
-                moveEvenNumberToLeft(i, segregatedArray);
-            }
-        }
+        copyEvenThenOddNumbersIntoArray(segregatedArray, array);
         return segregatedArray;
     }
 
-    private static void moveEvenNumberToLeft(int numberIndex, int[] array)
-    {
-        if(numberIndex != 0 && array[numberIndex - 1] % 2 == 1)
-        {
-            int newNumberIndex = numberIndex - 1;
-            swapTwoSuccessiveElementsAtIndex(newNumberIndex, array);
-            moveEvenNumberToLeft(newNumberIndex, array);
-        }
+    private static void copyEvenThenOddNumbersIntoArray(int[] newArray, int[] sourceArray){
+        int oddNumbersStartingIndex = copyEvenNumbersIntoArrayAndReturnTheirCount(newArray, sourceArray);
+        copyOddNumbersIntoArray(newArray, sourceArray, oddNumbersStartingIndex);
     }
 
-    private static void swapTwoSuccessiveElementsAtIndex(int firstElementIndex, int[] array)
-    {
-        int swapVariable = array[firstElementIndex];
-        array[firstElementIndex] = array[firstElementIndex + 1];
-        array[firstElementIndex + 1] = swapVariable;
+    private static int copyEvenNumbersIntoArrayAndReturnTheirCount(int[] newArray, int[] sourceArray){
+        int evenNumberCount = 0;
+        for (int number : sourceArray) {
+            if(number % 2 == 0){
+                newArray[evenNumberCount] = number;
+                evenNumberCount++;
+            }
+        }
+        return evenNumberCount;
+    }
+
+    private static void copyOddNumbersIntoArray(int[] newArray, int[] sourceArray, int startingIndex){
+        for (int number : sourceArray) {
+            if(number % 2 == 1){
+                newArray[startingIndex] = number;
+                startingIndex++;
+            }
+        }
     }
 
 }
