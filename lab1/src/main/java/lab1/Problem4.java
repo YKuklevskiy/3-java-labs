@@ -49,7 +49,7 @@ public class Problem4 {
             return true;
         }
 
-        int commonRatio = sequence[1] / sequence[0];
+        float commonRatio = (float) sequence[1] / sequence[0];
 
         for (int i = 2; i < sequence.length; i++) {
             if(sequence[i] != sequence[i-1] * commonRatio) {
