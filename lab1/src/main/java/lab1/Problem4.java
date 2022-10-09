@@ -37,21 +37,24 @@ public class Problem4 {
         String[] splitNumberStrings = numbers.strip().split(",+ *");
         int[] resultingSequence = new int[splitNumberStrings.length];
 
-        for (int i = 0; i < resultingSequence.length; i++)
+        for (int i = 0; i < resultingSequence.length; i++) {
             resultingSequence[i] = Integer.parseInt(splitNumberStrings[i]);
+        }
 
         return resultingSequence;
     }
 
     private static boolean isSortedGeometricProgression(int[] sequence){
-        if(sequence.length <= 2)
+        if(sequence.length <= 2) {
             return true;
+        }
 
         int commonRatio = sequence[1] / sequence[0];
 
         for (int i = 2; i < sequence.length; i++) {
-            if(sequence[i] != sequence[i-1] * commonRatio)
+            if(sequence[i] != sequence[i-1] * commonRatio) {
                 return false;
+            }
         }
 
         return true;

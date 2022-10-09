@@ -20,8 +20,9 @@ public class Problem2 {
         int[] segregatedArray = Arrays.copyOf(array, array.length);
 
         for (int i = 1; i < segregatedArray.length; i++) {
-            if(segregatedArray[i] % 2 == 0)
+            if(segregatedArray[i] % 2 == 0) {
                 moveEvenNumberToLeft(i, segregatedArray);
+            }
         }
         return segregatedArray;
     }

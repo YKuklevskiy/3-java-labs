@@ -54,4 +54,16 @@ class Problem4Test {
         assertFalse(actual);
     }
 
+    @Test
+    void testIsGeometricProgression_FloatingCommonRatio() {
+        // given
+        String input = "4, 6, 9";
+
+        // when
+        boolean actual = Problem4.isGeometricProgression(input);
+
+        // then
+        assertTrue(actual);
+    }
+
 }

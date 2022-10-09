@@ -19,18 +19,20 @@ public class Problem1 {
      * Выход: false (9 = 0x9, не содержит A)
      */
     public static boolean containsDigitAInHexadecimalRepresentation(int number) {
-        if(number < 0)
+        if(number < 0) {
             return false;
+        }
 
-        int A = 0xA;
+        int aDigit = 0xA;
         int hexNotationBase = 0x10;
 
         while(number > 0)
         {
             int rightDigit = number % hexNotationBase;
 
-            if(rightDigit == A)
+            if(rightDigit == aDigit) {
                 return true;
+            }
 
             number /= hexNotationBase;
         }

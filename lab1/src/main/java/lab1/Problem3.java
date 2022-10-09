@@ -16,8 +16,9 @@ public class Problem3 {
      * Выход: [1, 4, 7, 2, 5, 8, 3, 6, 9]
      */
     public static int[] flattenMatrix(int[][] matrix) {
-        if(matrix.length == 0)
+        if(matrix.length == 0) {
             return new int[0];
+        }
 
         int matrixHeight = matrix.length;
         int matrixWidth = matrix[0].length;
