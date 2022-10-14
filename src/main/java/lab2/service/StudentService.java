@@ -1,6 +1,7 @@
 package lab2.service;
 
 import lab2.model.ActionStatus;
+import lab2.model.CourseInstance;
 
 /**
  * Интерфейс сервиса для студентов
