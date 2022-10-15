@@ -4,44 +4,73 @@ import lab2.model.*;
 import lab2.reader.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class RAMResourceData implements ResourceData{
-    private CourseInfo[] courseInfoArray;
-    private CourseInstance[] courseInstanceArray;
-    private Instructor[] instructorArray;
-    private CategorizedStudent[] studentArray;
+public class RAMResourceData implements ResourceData {
+    private ArrayList<CourseInfo> courseInfoArray;
+    private ArrayList<CourseInstance> courseInstanceArray;
+    private ArrayList<Instructor> instructorArray;
+    private ArrayList<CategorizedStudent> studentArray;
 
     private CourseDataReader courseDataReader = new CourseDataReader();
     private InstructorDataReader instructorDataReader = new InstructorDataReader();
     private StudentDataReader studentDataReader = new StudentDataReader();
 
-    public RAMResourceData(){
-        try {
-            courseInfoArray = courseDataReader.readCourseInfoData();
-            courseInstanceArray = courseDataReader.readCourseInstanceData();
+    public RAMResourceData() {
+        tryLoadDataFromResourceFiles();
+    }
 
+    private void tryLoadDataFromResourceFiles() {
+        try {
+            loadCourses();
+            loadInstructors();
+            loadStudents();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private void loadCourses() throws IOException {
+        courseInfoArray.addAll(Arrays.asList(courseDataReader.readCourseInfoData()));
+        courseInstanceArray.addAll(Arrays.asList(courseDataReader.readCourseInstanceData()));
+    }
+
+    private void loadInstructors() throws IOException {
+        instructorArray.addAll(Arrays.asList(instructorDataReader.readInstructorData()));
+    }
+
+    private void loadStudents() throws IOException {
+        loadCategorizedStudents(StudentCategory.BACHELOR, studentDataReader.readBachelorStudentData());
+        loadCategorizedStudents(StudentCategory.MASTER, studentDataReader.readMasterStudentData());
+    }
+
+    private void loadCategorizedStudents(StudentCategory category, Student[] rawStudentArray) {
+        for (Student student : rawStudentArray) {
+            CategorizedStudent newCategorizedStudent = new CategorizedStudent(student);
+            newCategorizedStudent.setCategory(category);
+            studentArray.add(newCategorizedStudent);
+        }
+    }
+
     @Override
-    public CourseInfo[] getCoursesInfo() {
+    public List<CourseInfo> getCoursesInfo() {
         return courseInfoArray;
     }
 
     @Override
-    public CourseInstance[] getCourseInstances() {
+    public List<CourseInstance> getCourseInstances() {
         return courseInstanceArray;
     }
 
     @Override
-    public Instructor[] getInstructors() {
+    public List<Instructor> getInstructors() {
         return instructorArray;
     }
 
     @Override
-    public CategorizedStudent[] getStudents() {
+    public List<CategorizedStudent> getStudents() {
         return studentArray;
     }
 }

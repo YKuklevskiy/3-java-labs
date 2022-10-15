@@ -1,13 +1,13 @@
 package lab2.data;
 
-
 import lab2.model.*;
+import java.util.List;
 
 public interface ResourceData {
 
-    public CourseInfo[] getCoursesInfo();
-    public CourseInstance[] getCourseInstances();
-    public Instructor[] getInstructors();
-    public CategorizedStudent[] getStudents();
+    public List<CourseInfo> getCoursesInfo();
+    public List<CourseInstance> getCourseInstances();
+    public List<Instructor> getInstructors();
+    public List<CategorizedStudent> getStudents();
 
 }
