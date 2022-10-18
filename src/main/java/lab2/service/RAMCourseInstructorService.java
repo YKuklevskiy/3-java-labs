@@ -44,9 +44,9 @@ public class RAMCourseInstructorService implements CourseInstructorService{
 
     @Override
     public Instructor[] findReplacement(long instructorId, long courseId) {
-        CourseInstance courseInstance = subscriptionManager.getCourseByInstanceId(courseId);
+        CourseInstance courseInstance = subscriptionManager.getCourseInstanceByInstanceId(courseId);
         long courseInfoId = courseInstance.getCourseId();
-        ArrayList<Instructor> availableInstructors = getAllInstructorsForCourseById(courseInfoId);
+        ArrayList<Instructor> availableInstructors = subscriptionManager.getAllInstructorsForCourseByInfoId(courseInfoId);
         int currentInstructorIndex = IntStream.range(0, availableInstructors.size())
                                               .filter(i -> instructorId == availableInstructors.get(i).getId())
                                               .findFirst()

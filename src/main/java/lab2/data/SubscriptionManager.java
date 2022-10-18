@@ -12,6 +12,32 @@ public class SubscriptionManager {
     private List<Subscription> subscriptions = new ArrayList<>();
     private ResourceDataSearcher dataSearcher;
 
+    public Student getStudentInstanceById(long id){
+        return dataSearcher.getStudentById(id);
+    }
+
+    public CourseInstance getCourseInstanceByInstanceId(long id){
+        return dataSearcher.getCourseInstanceById(id);
+    }
+
+    public void addSubscription(long studentId, long courseId) {
+        subscriptions.add(new Subscription(studentId, courseId));
+    }
+
+    public void removeSubscription(long studentId, long courseId) {
+        long subscriptionIndex = findSubscriptionIndex(studentId, courseId);
+        subscriptions.remove(subscriptionIndex);
+    }
+
+    private int findSubscriptionIndex(long studentId, long courseId) {
+        Subscription searchedSubscription = new Subscription(studentId, courseId);
+
+        return IntStream.range(0, subscriptions.size())
+                .filter(i -> searchedSubscription.equals(subscriptions.get(i)))
+                .findFirst()
+                .getAsInt();
+    }
+
     public boolean canSubscribeForCourseByInstance(long studentId, long courseId){
         CourseInstance courseInstance = dataSearcher.getCourseInstanceById(courseId);
         CourseInfo courseInfo = dataSearcher.getCourseInfoById(courseInstance.getCourseId());
@@ -54,8 +80,8 @@ public class SubscriptionManager {
         CourseInstance courseInstance = dataSearcher.getCourseInstanceById(courseId);
         CategorizedStudent student = dataSearcher.getStudentById(studentId);
 
-        return  studentSubscribedForCourseInstance(student, courseInstance) &&
-                courseInstanceHasNotBegunYet(courseInstance);
+        return  courseInstanceHasNotBegunYet(courseInstance) &&
+                studentSubscribedForCourseInstance(student, courseInstance);
     }
 
     private boolean studentSubscribedForCourseInstance(CategorizedStudent student, CourseInstance courseInstance) {
@@ -64,24 +90,6 @@ public class SubscriptionManager {
         return Arrays.stream(studentSubscriptions)
                      .filter(subscription -> subscription == courseInstance)
                      .count() > 0;
-    }
-
-    public void addSubscription(long studentId, long courseId) {
-        subscriptions.add(new Subscription(studentId, courseId));
-    }
-
-    public void removeSubscription(long studentId, long courseId) {
-        long subscriptionIndex = findSubscriptionIndex(studentId, courseId);
-        subscriptions.remove(subscriptionIndex);
-    }
-
-    private int findSubscriptionIndex(long studentId, long courseId) {
-        Subscription searchedSubscription = new Subscription(studentId, courseId);
-
-        return IntStream.range(0, subscriptions.size())
-                        .filter(i -> searchedSubscription.equals(subscriptions.get(i)))
-                        .findFirst()
-                        .getAsInt();
     }
 
     public CourseInstance[] findAllInstanceSubscriptionsByStudentId(long studentId) {
@@ -115,15 +123,38 @@ public class SubscriptionManager {
     }
 
     public ArrayList<Subscription> findAllSubscriptionsByCourseInstanceId(long courseInstanceId){
-
+        ArrayList<Subscription> resultingSubscriptions = new ArrayList<>();
+        subscriptions.stream()
+                .filter(subscription -> subscription.getCourseInstanceId() == courseInstanceId)
+                .forEach(resultingSubscriptions::add);
+        return resultingSubscriptions;
     }
 
     public ArrayList<Subscription> findAllSubscriptionsByInstructorId(long instructorId){
-
+        ArrayList<Subscription> resultingSubscriptions = new ArrayList<>();
+        subscriptions.stream()
+                .filter(subscription ->
+                        isInstructorOfCourseByInstanceId(instructorId, subscription.getCourseInstanceId()) )
+                .forEach(resultingSubscriptions::add);
+        return resultingSubscriptions;
     }
 
-    public Student getStudentInstanceById(long id){
-        return dataSearcher.getStudentById(id);
+    private boolean isInstructorOfCourseByInstanceId(long instructorId, long courseInstanceId) {
+        return dataSearcher.getCourseInstanceById(courseInstanceId).getInstructorId() == instructorId;
     }
 
+    public ArrayList<Instructor> getAllInstructorsForCourseByInfoId(long courseInfoId) {
+        List<Instructor> instructors = dataSearcher.getAllInstructors();
+        ArrayList<Instructor> resultingInstructors = new ArrayList<>();
+        for (Instructor instructor : instructors) {
+            boolean canTeachThatCourse = Arrays.stream(instructor.getTeachableCourseIds())
+                    .filter(teachableCourseId -> teachableCourseId == courseInfoId)
+                    .count() > 0;
+
+            if(canTeachThatCourse) {
+                resultingInstructors.add(instructor);
+            }
+        }
+        return resultingInstructors;
+    }
 }

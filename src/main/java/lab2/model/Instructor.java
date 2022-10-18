@@ -10,6 +10,7 @@ public class Instructor extends Person {
      */
     int[] canTeach;
 
-    // TODO: добавить геттеры и сеттеры
-    
+    public int[] getTeachableCourseIds() {
+        return canTeach;
+    }
 }

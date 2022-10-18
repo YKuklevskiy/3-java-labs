@@ -32,24 +32,24 @@ public class CourseInstance {
      */
     private int capacity;
 
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public long getInstructorId() {
-        return instructorId;
+    public long getId() {
+        return id;
     }
 
     public long getCourseId() {
         return courseId;
     }
 
-    public long getId() {
-        return id;
+    public long getInstructorId() {
+        return instructorId;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
