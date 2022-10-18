@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RAMResourceData implements ResourceData {
-    private ArrayList<CourseInfo> courseInfoArray;
-    private ArrayList<CourseInstance> courseInstanceArray;
-    private ArrayList<Instructor> instructorArray;
-    private ArrayList<CategorizedStudent> studentArray;
+    private ArrayList<CourseInfo> courseInfoArray = new ArrayList<>();
+    private ArrayList<CourseInstance> courseInstanceArray = new ArrayList<>();
+    private ArrayList<Instructor> instructorArray = new ArrayList<>();
+    private ArrayList<CategorizedStudent> studentArray = new ArrayList<>();
 
     private CourseDataReader courseDataReader = new CourseDataReader();
     private InstructorDataReader instructorDataReader = new InstructorDataReader();

@@ -52,6 +52,27 @@ public class CourseInstance {
         return capacity;
     }
 
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
+
+    public void setInstructorId(long instructorId) {
+        this.instructorId = instructorId;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this)
@@ -61,5 +82,4 @@ public class CourseInstance {
         CourseInstance other = (CourseInstance) obj;
         return this.id == other.id;
     }
-    
 }

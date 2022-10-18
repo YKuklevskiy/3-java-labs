@@ -13,4 +13,8 @@ public class Instructor extends Person {
     public int[] getTeachableCourseIds() {
         return canTeach;
     }
+
+    public void setCanTeach(int[] canTeach) {
+        this.canTeach = canTeach;
+    }
 }

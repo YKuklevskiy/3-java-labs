@@ -10,6 +10,10 @@ import java.io.IOException;
 public class CourseDataReader {
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    public CourseDataReader() {
+        objectMapper.findAndRegisterModules();
+    }
+
     public CourseInfo[] readCourseInfoData() throws IOException {
         return objectMapper.readValue(new File("src/main/resources/courseInfos.json"), CourseInfo[].class);
     }

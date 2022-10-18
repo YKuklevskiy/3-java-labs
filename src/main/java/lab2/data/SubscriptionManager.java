@@ -6,11 +6,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public class SubscriptionManager {
     private List<Subscription> subscriptions = new ArrayList<>();
     private ResourceDataSearcher dataSearcher;
+
+    public SubscriptionManager(ResourceDataSearcher resourceDataSearcher) {
+        this.dataSearcher = resourceDataSearcher;
+    }
 
     public Student getStudentInstanceById(long id){
         return dataSearcher.getStudentById(id);
@@ -64,10 +70,21 @@ public class SubscriptionManager {
     }
 
     private boolean LongArrayContainsAllElementsFromOther(long[] outer, long[] inner) {
-        return Arrays.asList(outer).containsAll(Arrays.asList(inner));
+        if(inner == null || inner.length == 0){
+            return true;
+        }
+        if(outer == null){
+            return false;
+        }
+        List<Long> outerList = LongStream.of(outer).boxed().collect(Collectors.toList());
+        List<Long> innerList = LongStream.of(inner).boxed().collect(Collectors.toList());
+        return outerList.containsAll(innerList);
     }
 
     private boolean courseInstanceHasAvailablePlaces(CourseInstance courseInstance){
+        if(courseInstance.getCapacity() == 0){
+            return true; // Capacity not set => no limit on attenders
+        }
         List<Subscription> currentCourseSubscriptions = findAllSubscriptionsByCourseInstanceId(courseInstance.getId());
         return currentCourseSubscriptions.size() < courseInstance.getCapacity();
     }

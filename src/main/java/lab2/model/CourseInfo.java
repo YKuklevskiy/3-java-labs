@@ -1,5 +1,8 @@
 package lab2.model;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
+
 /**
  * Класс для базовой информации о курсе
  */
@@ -40,5 +43,25 @@ public class CourseInfo {
 
     public StudentCategory[] getStudentCategories() {
         return studentCategories;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrerequisites(long[] prerequisites) {
+        this.prerequisites = prerequisites;
+    }
+
+    public void setStudentCategories(StudentCategory[] studentCategories) {
+        this.studentCategories = studentCategories;
     }
 }
