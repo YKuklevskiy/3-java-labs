@@ -32,6 +32,34 @@ public class CourseInstance {
      */
     private int capacity;
 
-    // TODO: добавить геттеры и сеттеры
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public long getInstructorId() {
+        return instructorId;
+    }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (!(obj instanceof CourseInstance))
+            return false;
+        CourseInstance other = (CourseInstance) obj;
+        return this.id == other.id;
+    }
     
 }

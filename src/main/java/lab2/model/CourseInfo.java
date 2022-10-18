@@ -30,6 +30,15 @@ public class CourseInfo {
      */
     private StudentCategory[] studentCategories;
 
-    // TODO: добавить геттеры и сеттеры
+    public long getId() {
+        return id;
+    }
 
+    public long[] getPrerequisites() {
+        return prerequisites;
+    }
+
+    public StudentCategory[] getStudentCategories() {
+        return studentCategories;
+    }
 }
