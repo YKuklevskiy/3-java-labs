@@ -31,7 +31,7 @@ public class SubscriptionManager {
     }
 
     public void removeSubscription(long studentId, long courseId) {
-        long subscriptionIndex = findSubscriptionIndex(studentId, courseId);
+        int subscriptionIndex = findSubscriptionIndex(studentId, courseId);
         subscriptions.remove(subscriptionIndex);
     }
 
@@ -48,8 +48,12 @@ public class SubscriptionManager {
         CourseInstance courseInstance = dataSearcher.getCourseInstanceById(courseId);
         CourseInfo courseInfo = dataSearcher.getCourseInfoById(courseInstance.getCourseId());
         CategorizedStudent student = dataSearcher.getStudentById(studentId);
+        if(courseInstance == null || courseInfo == null || student == null) {
+            return false;
+        }
 
         return  courseCategoryIsAvailableForStudent(courseInfo, student) &&
+                !studentSubscribedForCourseInstance(student, courseInstance) &&
                 studentHasCompletedAllRequiredCourses(student, courseInfo) &&
                 courseInstanceHasAvailablePlaces(courseInstance) &&
                 courseInstanceHasNotBegunYet(courseInstance);
@@ -63,6 +67,14 @@ public class SubscriptionManager {
             }
         }
         return false;
+    }
+
+    private boolean studentSubscribedForCourseInstance(CategorizedStudent student, CourseInstance courseInstance) {
+        CourseInstance[] studentSubscriptions = findAllInstanceSubscriptionsByStudentId(student.getId());
+
+        return Arrays.stream(studentSubscriptions)
+                .filter(subscription -> subscription == courseInstance)
+                .count() > 0;
     }
 
     private boolean studentHasCompletedAllRequiredCourses(CategorizedStudent student, CourseInfo course){
@@ -82,7 +94,7 @@ public class SubscriptionManager {
     }
 
     private boolean courseInstanceHasAvailablePlaces(CourseInstance courseInstance){
-        if(courseInstance.getCapacity() == 0){
+        if(courseInstance.getCapacity() == 0) {
             return true; // Capacity not set => no limit on attenders
         }
         List<Subscription> currentCourseSubscriptions = findAllSubscriptionsByCourseInstanceId(courseInstance.getId());
@@ -96,17 +108,12 @@ public class SubscriptionManager {
     public boolean canUnsubscribeFromCourse(long studentId, long courseId){
         CourseInstance courseInstance = dataSearcher.getCourseInstanceById(courseId);
         CategorizedStudent student = dataSearcher.getStudentById(studentId);
+        if(courseInstance == null || student == null) {
+            return false;
+        }
 
         return  courseInstanceHasNotBegunYet(courseInstance) &&
                 studentSubscribedForCourseInstance(student, courseInstance);
-    }
-
-    private boolean studentSubscribedForCourseInstance(CategorizedStudent student, CourseInstance courseInstance) {
-        CourseInstance[] studentSubscriptions = findAllInstanceSubscriptionsByStudentId(student.getId());
-
-        return Arrays.stream(studentSubscriptions)
-                     .filter(subscription -> subscription == courseInstance)
-                     .count() > 0;
     }
 
     public CourseInstance[] findAllInstanceSubscriptionsByStudentId(long studentId) {

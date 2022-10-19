@@ -31,20 +31,20 @@ public class ResourceDataSearcher {
         return  data.getCourseInstances().stream()
                 .filter(x -> x.getId() == id)
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     public CourseInfo getCourseInfoById(long id) {
         return  data.getCoursesInfo().stream()
                 .filter(x -> x.getId() == id)
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     public CategorizedStudent getStudentById(long studentId) {
         return  data.getStudents().stream()
                 .filter(x -> x.getId() == studentId)
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 }

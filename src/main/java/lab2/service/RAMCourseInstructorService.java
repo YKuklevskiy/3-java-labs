@@ -50,8 +50,10 @@ public class RAMCourseInstructorService implements CourseInstructorService{
         int currentInstructorIndex = IntStream.range(0, availableInstructors.size())
                                               .filter(i -> instructorId == availableInstructors.get(i).getId())
                                               .findFirst()
-                                              .getAsInt();
-        availableInstructors.remove(currentInstructorIndex);
+                                              .orElse(-1); // this should only happen if the course is taught by a fraud who can't teach it.
+        if(currentInstructorIndex != -1) {
+            availableInstructors.remove(currentInstructorIndex);
+        }
 
         Instructor[] availableInstructorsArray = new Instructor[availableInstructors.size()];
         availableInstructorsArray = availableInstructors.toArray(availableInstructorsArray);
