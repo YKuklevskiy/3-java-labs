@@ -57,11 +57,10 @@ public class ResourceDataSelector {
 
         List<Instructor> instructors = dataSearcher.getAllInstructors();
         ArrayList<Instructor> resultingInstructors = new ArrayList<>();
-        for (Instructor instructor : instructors) {
-            if(isCourseTeachableForInstructor(courseInfoId, instructor)) {
-                resultingInstructors.add(instructor);
-            }
-        }
+        instructors.stream()
+                .filter(instructor -> isCourseTeachableForInstructor(courseInfoId, instructor))
+                .forEach(resultingInstructors::add);
+
         return resultingInstructors;
     }
 

@@ -58,12 +58,8 @@ public class SubscriptionManager {
 
     private boolean courseCategoryIsAvailableForStudent(CourseInfo course, CategorizedStudent student){
         StudentCategory[] availableStudentCategories = course.getStudentCategories();
-        for (StudentCategory category : availableStudentCategories) {
-            if (category == student.getCategory()) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(availableStudentCategories)
+                .anyMatch(category -> category == student.getCategory());
     }
 
     private boolean studentSubscribedForCourseInstance(CategorizedStudent student, CourseInstance courseInstance) {
@@ -119,12 +115,10 @@ public class SubscriptionManager {
 
     private ArrayList<Long> findAllSubscribedCourseIdsByStudentId(long studentId){
         ArrayList<Long> subscribedCourseInstancesId = new ArrayList<>();
-
-        for (Subscription subscription : subscriptions) {
-            if (subscription.getStudentId() == studentId){
-                subscribedCourseInstancesId.add(subscription.getCourseInstanceId());
-            }
-        }
+        subscriptions.stream()
+                .filter(subscription -> subscription.getStudentId() == studentId)
+                .map(subscription -> subscription.getCourseInstanceId())
+                .forEach(subscribedCourseInstancesId::add);
 
         return subscribedCourseInstancesId;
     }
