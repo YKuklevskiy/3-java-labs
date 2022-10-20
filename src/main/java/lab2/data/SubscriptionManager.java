@@ -17,11 +17,11 @@ public class SubscriptionManager {
         this.dataSearcher = resourceDataSearcher;
     }
 
-    public Student getStudentInstanceById(long id){
+    private Student getStudentInstanceById(long id){
         return dataSearcher.getStudentById(id);
     }
 
-    public CourseInstance getCourseInstanceByInstanceId(long id){
+    private CourseInstance getCourseInstanceByInstanceId(long id){
         return dataSearcher.getCourseInstanceById(id);
     }
 
@@ -144,7 +144,12 @@ public class SubscriptionManager {
         return courseInstanceArray;
     }
 
-    public ArrayList<Subscription> findAllSubscriptionsByCourseInstanceId(long courseInstanceId){
+    public Student[] findAllStudentsByCourseInstanceId(long courseInstanceId){
+        ArrayList<Subscription> subscriptions = findAllSubscriptionsByCourseInstanceId(courseInstanceId);
+        return getStudentArrayFromSubscriptionList(subscriptions);
+    }
+
+    private ArrayList<Subscription> findAllSubscriptionsByCourseInstanceId(long courseInstanceId){
         ArrayList<Subscription> resultingSubscriptions = new ArrayList<>();
         subscriptions.stream()
                 .filter(subscription -> subscription.getCourseInstanceId() == courseInstanceId)
@@ -152,7 +157,24 @@ public class SubscriptionManager {
         return resultingSubscriptions;
     }
 
-    public ArrayList<Subscription> findAllSubscriptionsByInstructorId(long instructorId){
+    private Student[] getStudentArrayFromSubscriptionList(ArrayList<Subscription> subscriptions){
+        ArrayList<Student> subscribedStudents = new ArrayList<>();
+        for(Subscription subscription : subscriptions){
+            long studentId = subscription.getStudentId();
+            Student subscribedStudent = getStudentInstanceById(studentId);
+            subscribedStudents.add(subscribedStudent);
+        }
+
+        Student[] subscribedStudentsArray = subscribedStudents.toArray(new Student[0]);
+        return subscribedStudentsArray;
+    }
+
+    public Student[] findAllStudentsByInstructorId(long instructorId) {
+        ArrayList<Subscription> subscriptions = findAllSubscriptionsByInstructorId(instructorId);
+        return getStudentArrayFromSubscriptionList(subscriptions);
+    }
+
+    private ArrayList<Subscription> findAllSubscriptionsByInstructorId(long instructorId){
         ArrayList<Subscription> resultingSubscriptions = new ArrayList<>();
         subscriptions.stream()
                 .filter(subscription ->
@@ -165,18 +187,41 @@ public class SubscriptionManager {
         return dataSearcher.getCourseInstanceById(courseInstanceId).getInstructorId() == instructorId;
     }
 
-    public ArrayList<Instructor> getAllInstructorsForCourseByInfoId(long courseInfoId) {
+    public Instructor[] findReplacementForInstructorByInstanceId(long instructorId, long courseInstanceId) {
+        ArrayList<Instructor> availableInstructors = getAllInstructorsForCourseByInstanceId(courseInstanceId);
+        int currentInstructorIndex = IntStream.range(0, availableInstructors.size())
+                .filter(i -> instructorId == availableInstructors.get(i).getId())
+                .findFirst()
+                .orElse(-1); // this should only happen if the course is taught by a fraud who can't teach it.
+
+        if(currentInstructorIndex != -1) {
+            availableInstructors.remove(currentInstructorIndex);
+        }
+
+        Instructor[] availableInstructorsArray = availableInstructors.toArray(new Instructor[0]);
+        return availableInstructorsArray;
+    }
+
+    private ArrayList<Instructor> getAllInstructorsForCourseByInstanceId(long courseInstanceId) {
+        CourseInstance courseInstance = getCourseInstanceByInstanceId(courseInstanceId);
+        long courseInfoId = courseInstance.getCourseId();
+
         List<Instructor> instructors = dataSearcher.getAllInstructors();
         ArrayList<Instructor> resultingInstructors = new ArrayList<>();
         for (Instructor instructor : instructors) {
-            boolean canTeachThatCourse = Arrays.stream(instructor.getTeachableCourseIds())
-                    .filter(teachableCourseId -> teachableCourseId == courseInfoId)
-                    .count() > 0;
-
-            if(canTeachThatCourse) {
+            if(isCourseTeachableForInstructor(courseInfoId, instructor)) {
                 resultingInstructors.add(instructor);
             }
         }
         return resultingInstructors;
+    }
+
+    private boolean isCourseTeachableForInstructor(long courseInfoId, Instructor instructor) {
+        return Arrays.stream(instructor.getTeachableCourseIds())
+                     .anyMatch(teachableCourseId -> teachableCourseId == courseInfoId);
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 }

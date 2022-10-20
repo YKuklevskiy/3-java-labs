@@ -1,13 +1,8 @@
 package lab2.service;
 
 import lab2.data.SubscriptionManager;
-import lab2.model.CourseInstance;
 import lab2.model.Instructor;
 import lab2.model.Student;
-import lab2.model.Subscription;
-
-import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class RAMCourseInstructorService implements CourseInstructorService{
 
@@ -19,44 +14,16 @@ public class RAMCourseInstructorService implements CourseInstructorService{
 
     @Override
     public Student[] findStudentsByCourseId(long courseId) {
-        ArrayList<Subscription> subscriptions = subscriptionManager.findAllSubscriptionsByCourseInstanceId(courseId);
-        return getStudentArrayFromSubscriptionArray(subscriptions);
-    }
-
-    private Student[] getStudentArrayFromSubscriptionArray(ArrayList<Subscription> subscriptions){
-        ArrayList<Student> subscribedStudents = new ArrayList<>();
-        for(Subscription subscription : subscriptions){
-            long studentId = subscription.getStudentId();
-            Student subscribedStudent = subscriptionManager.getStudentInstanceById(studentId);
-            subscribedStudents.add(subscribedStudent);
-        }
-
-        Student[] subscribedStudentsArray = new Student[subscribedStudents.size()];
-        subscribedStudentsArray = subscribedStudents.toArray(subscribedStudentsArray);
-        return subscribedStudentsArray;
+        return subscriptionManager.findAllStudentsByCourseInstanceId(courseId);
     }
 
     @Override
     public Student[] findStudentsByInstructorId(long instructorId) {
-        ArrayList<Subscription> subscriptions = subscriptionManager.findAllSubscriptionsByInstructorId(instructorId);
-        return getStudentArrayFromSubscriptionArray(subscriptions);
+        return subscriptionManager.findAllStudentsByInstructorId(instructorId);
     }
 
     @Override
     public Instructor[] findReplacement(long instructorId, long courseId) {
-        CourseInstance courseInstance = subscriptionManager.getCourseInstanceByInstanceId(courseId);
-        long courseInfoId = courseInstance.getCourseId();
-        ArrayList<Instructor> availableInstructors = subscriptionManager.getAllInstructorsForCourseByInfoId(courseInfoId);
-        int currentInstructorIndex = IntStream.range(0, availableInstructors.size())
-                                              .filter(i -> instructorId == availableInstructors.get(i).getId())
-                                              .findFirst()
-                                              .orElse(-1); // this should only happen if the course is taught by a fraud who can't teach it.
-        if(currentInstructorIndex != -1) {
-            availableInstructors.remove(currentInstructorIndex);
-        }
-
-        Instructor[] availableInstructorsArray = new Instructor[availableInstructors.size()];
-        availableInstructorsArray = availableInstructors.toArray(availableInstructorsArray);
-        return availableInstructorsArray;
+        return subscriptionManager.findReplacementForInstructorByInstanceId(instructorId, courseId);
     }
 }
