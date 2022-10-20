@@ -1,8 +1,5 @@
 package lab2.model;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
-
 /**
  * Класс для базовой информации о курсе
  */

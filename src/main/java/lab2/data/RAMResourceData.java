@@ -9,14 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RAMResourceData implements ResourceData {
-    private ArrayList<CourseInfo> courseInfoArray = new ArrayList<>();
-    private ArrayList<CourseInstance> courseInstanceArray = new ArrayList<>();
-    private ArrayList<Instructor> instructorArray = new ArrayList<>();
-    private ArrayList<CategorizedStudent> studentArray = new ArrayList<>();
+    private final ArrayList<CourseInfo> courseInfoArray = new ArrayList<>();
+    private final ArrayList<CourseInstance> courseInstanceArray = new ArrayList<>();
+    private final ArrayList<Instructor> instructorArray = new ArrayList<>();
+    private final ArrayList<CategorizedStudent> studentArray = new ArrayList<>();
 
-    private CourseDataReader courseDataReader = new CourseDataReader();
-    private InstructorDataReader instructorDataReader = new InstructorDataReader();
-    private StudentDataReader studentDataReader = new StudentDataReader();
+    private final CourseDataReader courseDataReader = new CourseDataReader();
+    private final InstructorDataReader instructorDataReader = new InstructorDataReader();
+    private final StudentDataReader studentDataReader = new StudentDataReader();
 
     public RAMResourceData() {
         tryLoadDataFromResourceFiles();

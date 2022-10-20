@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface ResourceData {
 
-    public List<CourseInfo> getCoursesInfo();
-    public List<CourseInstance> getCourseInstances();
-    public List<Instructor> getInstructors();
-    public List<CategorizedStudent> getStudents();
+    List<CourseInfo> getCoursesInfo();
+    List<CourseInstance> getCourseInstances();
+    List<Instructor> getInstructors();
+    List<CategorizedStudent> getStudents();
 
 }

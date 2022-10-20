@@ -5,7 +5,7 @@ import lab2.model.ActionStatus;
 import lab2.model.CourseInstance;
 
 public class RAMStudentService implements StudentService{
-    private SubscriptionManager subscriptionManager;
+    private final SubscriptionManager subscriptionManager;
 
     public RAMStudentService(SubscriptionManager subscriptionManager) {
         this.subscriptionManager = subscriptionManager;

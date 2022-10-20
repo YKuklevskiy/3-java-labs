@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class InstructorDataReader {
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Instructor[] readInstructorData() throws IOException {
         return objectMapper.readValue(new File("src/main/resources/instructors.json"), Instructor[].class);

@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 
 public class RAMCourseInstructorService implements CourseInstructorService{
 
-    private SubscriptionManager subscriptionManager;
+    private final SubscriptionManager subscriptionManager;
 
     public RAMCourseInstructorService(SubscriptionManager subscriptionManager) {
         this.subscriptionManager = subscriptionManager;

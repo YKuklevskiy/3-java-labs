@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class StudentDataReader {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * @return список студентов-бакалавров

@@ -6,13 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 public class SubscriptionManager {
-    private List<Subscription> subscriptions = new ArrayList<>();
-    private ResourceDataSearcher dataSearcher;
+    private final List<Subscription> subscriptions = new ArrayList<>();
+    private final ResourceDataSearcher dataSearcher;
 
     public SubscriptionManager(ResourceDataSearcher resourceDataSearcher) {
         this.dataSearcher = resourceDataSearcher;
@@ -73,8 +72,7 @@ public class SubscriptionManager {
         CourseInstance[] studentSubscriptions = findAllInstanceSubscriptionsByStudentId(student.getId());
 
         return Arrays.stream(studentSubscriptions)
-                .filter(subscription -> subscription == courseInstance)
-                .count() > 0;
+               .anyMatch(subscription -> subscription == courseInstance);
     }
 
     private boolean studentHasCompletedAllRequiredCourses(CategorizedStudent student, CourseInfo course){
@@ -88,8 +86,8 @@ public class SubscriptionManager {
         if(outer == null){
             return false;
         }
-        List<Long> outerList = LongStream.of(outer).boxed().collect(Collectors.toList());
-        List<Long> innerList = LongStream.of(inner).boxed().collect(Collectors.toList());
+        List<Long> outerList = LongStream.of(outer).boxed().toList();
+        List<Long> innerList = LongStream.of(inner).boxed().toList();
         return outerList.containsAll(innerList);
     }
 

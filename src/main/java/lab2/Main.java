@@ -37,7 +37,7 @@ public class Main {
 
         instancesTest = studentService.findAllSubscriptionsByStudentId(102); // no subscriptions
 
-        // resub
+        // resubscribe
         result = studentService.subscribe(102, 100002);
         System.out.println(result.toString()); // OK
 

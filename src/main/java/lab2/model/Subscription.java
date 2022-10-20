@@ -13,11 +13,11 @@ public class Subscription {
         this.subscriptionDate = LocalDate.now();
     }
 
-    private long studentId;
+    private final long studentId;
 
-    private long courseInstanceId;
+    private final long courseInstanceId;
 
-    private LocalDate subscriptionDate;
+    private final LocalDate subscriptionDate;
 
     public long getStudentId() {
         return studentId;

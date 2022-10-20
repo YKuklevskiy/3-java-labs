@@ -5,7 +5,7 @@ import lab2.model.*;
 import java.util.List;
 
 public class ResourceDataSearcher {
-    private ResourceData data;
+    private final ResourceData data;
 
     public ResourceDataSearcher(ResourceData data){
         this.data = data;

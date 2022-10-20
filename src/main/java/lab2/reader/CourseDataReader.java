@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class CourseDataReader {
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public CourseDataReader() {
         objectMapper.findAndRegisterModules();
