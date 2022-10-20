@@ -1,6 +1,5 @@
 package lab2;
 
-import lab2.data.ResourceDataSearcher;
 import lab2.data.SubscriptionManager;
 import lab2.model.ActionStatus;
 import lab2.model.CourseInstance;
@@ -8,13 +7,10 @@ import lab2.model.Instructor;
 import lab2.model.Student;
 import lab2.service.RAMCourseInstructorService;
 import lab2.service.RAMStudentService;
-import lab2.data.RAMResourceData;
 
 public class Main {
     public static void main(String[] args){
-        RAMResourceData resourceData = new RAMResourceData();
-        ResourceDataSearcher resourceDataSearcher = new ResourceDataSearcher(resourceData);
-        SubscriptionManager subscriptionManager = new SubscriptionManager(resourceDataSearcher);
+        SubscriptionManager subscriptionManager = new SubscriptionManager();
         RAMStudentService studentService = new RAMStudentService(subscriptionManager);
         RAMCourseInstructorService courseInstructorService = new RAMCourseInstructorService(subscriptionManager);
 

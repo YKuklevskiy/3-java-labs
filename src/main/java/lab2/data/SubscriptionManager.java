@@ -13,8 +13,12 @@ public class SubscriptionManager {
     private final List<Subscription> subscriptions = new ArrayList<>();
     private final ResourceDataSearcher dataSearcher;
 
-    public SubscriptionManager(ResourceDataSearcher resourceDataSearcher) {
-        this.dataSearcher = resourceDataSearcher;
+    public SubscriptionManager() {
+        this(new RAMResourceData());
+    }
+
+    public SubscriptionManager(ResourceData resourceData) {
+        this.dataSearcher = new ResourceDataSearcher(resourceData);
     }
 
     private Student getStudentInstanceById(long id){
