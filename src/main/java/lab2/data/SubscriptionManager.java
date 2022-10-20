@@ -168,8 +168,7 @@ public class SubscriptionManager {
             availableInstructors.remove(currentInstructorIndex);
         }
 
-        Instructor[] availableInstructorsArray = availableInstructors.toArray(new Instructor[0]);
-        return availableInstructorsArray;
+        return availableInstructors.toArray(new Instructor[0]);
     }
 
     public List<Subscription> getSubscriptions() {

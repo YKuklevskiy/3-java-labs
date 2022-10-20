@@ -33,8 +33,7 @@ public class ResourceDataSelector {
             searchedCourseInstances.add(courseInstance);
         }
 
-        CourseInstance[] courseInstanceArray = searchedCourseInstances.toArray(new CourseInstance[0]);
-        return courseInstanceArray;
+        return searchedCourseInstances.toArray(new CourseInstance[0]);
     }
 
     public Student[] getStudentArrayFromSubscriptionList(ArrayList<Subscription> subscriptions){
@@ -45,8 +44,7 @@ public class ResourceDataSelector {
             subscribedStudents.add(subscribedStudent);
         }
 
-        Student[] subscribedStudentsArray = subscribedStudents.toArray(new Student[0]);
-        return subscribedStudentsArray;
+        return subscribedStudents.toArray(new Student[0]);
     }
 
     public boolean isInstructorOfCourseByInstanceId(long instructorId, long courseInstanceId) {

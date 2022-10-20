@@ -61,4 +61,12 @@ public class CourseInfo {
     public void setStudentCategories(StudentCategory[] studentCategories) {
         this.studentCategories = studentCategories;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
